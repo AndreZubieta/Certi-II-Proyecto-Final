@@ -1,0 +1,30 @@
+package stepDefinitions;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import utilities.DriverManager;
+
+public class Hooks {
+
+
+    // Haz el driver accesible para otras clases
+    public static WebDriver driver;
+
+    @Before
+    public void setUp() {
+        // Configura el driver antes de cada escenario
+        driver = new ChromeDriver();
+        driver.manage().window().maximize(); // Maximiza la ventana del navegador
+        driver.get("https://www.saucedemo.com"); // Navega a la URL inicial
+    }
+
+
+    @After
+    public void tearDown() {
+        if (DriverManager.getDriver() != null) {
+            DriverManager.getDriver().driver.quit();
+        }
+    }
+}
