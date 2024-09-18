@@ -1,0 +1,40 @@
+package stepDefinitions;
+
+import io.cucumber.java.en.And;
+import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.WebDriver;
+import utilities.DriverManager;
+import io.cucumber.java.en.Given;
+import pages.LoginPage;
+public class CommonSteps {
+
+
+    WebDriver driver = Hooks.driver;
+
+
+    @Given("I am in sauce demo web page")
+    public void goToSauceDemoPage(){
+        driver.get("https://www.saucedemo.com/v1/");
+        driver.manage().window().maximize();
+    }
+    LoginPage loginPage = new LoginPage(driver);
+
+    @Given("I set the user name text box with {string}")
+    public void setUserName(String userName){
+        loginPage.setUserNameTextBox(userName);
+    }
+    @And("I set the password text box with {string}")
+    public void setPassword(String password){
+        loginPage.setPasswordTextBox(password);
+    }
+
+    @And("I click on the login button")
+    public void clickOnLogin(){
+        loginPage.clickOnLoginButton();
+    }
+
+    @And("A error message that says {string} should be displayed")
+    public void verifyErrorMessage(String message){
+        Assertions.assertTrue(loginPage.errorMessageIsDisplayed(message));
+    }
+}
