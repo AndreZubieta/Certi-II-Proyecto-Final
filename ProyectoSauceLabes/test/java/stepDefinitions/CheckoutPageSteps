@@ -1,0 +1,72 @@
+package stepDefinitions;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.WebDriver;
+import pages.CartPage;
+import pages.CheckoutPage;
+import pages.CheckoutPageStepTwo;
+import pages.HomePage;
+
+public class CheckoutPageSteps {
+    WebDriver driver = Hooks.driver;
+    HomePage homePage = new HomePage(driver);
+    CartPage cartPage = new CartPage(driver);
+    CheckoutPage checkoutPage = new CheckoutPage(driver);
+    CheckoutPageStepTwo checkoutPageStepTwo = new CheckoutPageStepTwo(driver);
+
+    @Given("el usuario añade un producto al carrito")
+    public void addProductToCart() {
+        homePage.addItemToCart("sauce labs backpack");
+    }
+
+    @When("el usuario hace click en el carrito")
+    public void clickOnCart() {
+        homePage.clickOnCartIcon();
+    }
+
+    @And("hace click en el botón de menú")
+    public void clickOnBurgerButton() {
+        homePage.clickOnBurgerButton();
+    }
+
+    @And("hace un logout")
+    public void clickOnLogoutSidebarButton() {
+        homePage.clickOnLogoutButton();
+    }
+
+    @And("hace click en el botón de checkout")
+    public void clickOnCheckoutButton() {
+        cartPage.clickOnCheckoutButton();
+    }
+
+    @And("hace click en el botón de continuar")
+    public void clickOnContinueButton() {
+        checkoutPage.clickOnContinueButton();
+    }
+
+    @Then("debería ver un mensaje de error por datos en blanco {string}")
+    public void verifyErrorMessageForBlankData(String message) {
+
+        Assertions.assertTrue(checkoutPage.errorMessageIsDisplayed(message));
+
+    }
+
+    @And("ingresa los datos de envio válidos {string} {string} {string}")
+    public void enterValidShippingInformation(String FirstName, String LastName, String postalCode) {
+        checkoutPage.fillCheckoutInformation(FirstName, LastName, postalCode);
+    }
+
+    @And("hace click en el botón de finish")
+    public void clickOnFinishButton() {
+        checkoutPageStepTwo.clickOnFinishButton();
+    }
+
+
+    @Then("debería ver la página de confirmación de compra")
+    public void verifyConfirmationPage() {
+        Assertions.assertTrue(checkoutPage.isOrderComplete());
+    }
+}
