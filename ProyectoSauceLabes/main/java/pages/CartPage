@@ -1,0 +1,65 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+public class CartPage {
+    WebDriver driver;
+
+    @FindBy(className = "cart_item")
+    WebElement cartItem;
+
+    @FindBy(css ="#cart_contents_container > div > div.cart_list > div.cart_item > div.cart_item_label > div.item_pricebar > button")
+    WebElement homepageButton;
+
+    @FindBy(css ="#cart_contents_container > div > div.cart_footer > a.btn_action.checkout_button")
+    WebElement checkoutButton;
+
+    @FindBy(css="#cart_contents_container > div > div.cart_list > div:nth-child(3) > div.cart_item_label > div.item_pricebar > button")
+    WebElement removeBackpackButton;
+
+    @FindBy(css = "#cart_contents_container > div > div.cart_list > div.cart_item > div.cart_item_label > div.item_pricebar > button")
+    WebElement removeButton;
+
+    @FindBy(css="#cart_contents_container > div > div.cart_list > div:nth-child(4) > div.cart_item_label > div.item_pricebar > button")
+    WebElement removeBikeLightButton;
+
+    public CartPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public boolean isItemInCart(String itemName) {
+        return cartItem.getText().contains(itemName);
+    }
+
+    public void clickOnCheckoutButton() {
+        checkoutButton.click();
+    }
+    public void clickOnRemoveButton() {
+        removeBackpackButton.click();
+    }
+    public void clickOnHomepageButton() {
+        homepageButton.click();
+    }
+
+    public void removeItemFromCart(String itemName) {
+        switch (itemName.toLowerCase()) {
+            case "sauce labs backpack":
+                removeBackpackButton.click();
+                break;
+            case "sauce labs bike light":
+                removeBikeLightButton.click();
+                break;
+            default:
+                throw new IllegalArgumentException("Item not available for removal: " + itemName);
+        }
+    }
+}
