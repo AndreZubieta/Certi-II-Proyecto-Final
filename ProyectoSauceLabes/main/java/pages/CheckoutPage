@@ -1,0 +1,60 @@
+package pages;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class CheckoutPage {
+    WebDriver driver;
+
+    @FindBy(id = "first-name")
+    WebElement firstNameField;
+
+    @FindBy(id = "last-name")
+    WebElement lastNameField;
+
+    @FindBy(id = "postal-code")
+    WebElement postalCodeField;
+
+    @FindBy(css = "#checkout_info_container > div > form > div.checkout_buttons > input")
+    WebElement continueButton;
+
+    @FindBy(css = "#checkout_summary_container > div > div.summary_info > div.cart_footer > a.btn_action.cart_button")
+    WebElement finishButton;
+
+    @FindBy(className = "complete-header")
+    WebElement successMessage;
+
+    @FindBy(css = "[data-test='error']")
+    private WebElement errorMessageText;
+
+    public CheckoutPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public void fillCheckoutInformation(String firstName, String lastName, String postalCode) {
+        firstNameField.sendKeys(firstName);
+        lastNameField.sendKeys(lastName);
+        postalCodeField.sendKeys(postalCode);
+    }
+
+    public void clickOnContinueButton() {
+        continueButton.click();
+    }
+
+
+    public boolean isOrderComplete() {
+        return successMessage.getText().contains("THANK YOU FOR YOUR ORDER");
+    }
+
+    public boolean errorMessageIsDisplayed(String message){
+        String actualMessage = errorMessageText.getText();
+        if(message.equalsIgnoreCase(actualMessage)){
+            return true;
+        }
+        return false;
+    }
+
+}
