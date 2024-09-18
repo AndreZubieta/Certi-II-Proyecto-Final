@@ -1,0 +1,86 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+public class HomePage {
+    WebDriver driver;
+
+    @FindBy(className = "app_logo")
+    WebElement logo;
+
+    @FindBy(css = "#shopping_cart_container > a > svg")
+    WebElement shoppingCartIcon;
+
+    @FindBy(className = "fa-layers-counter")
+    WebElement cartNumber;
+
+    @FindBy(xpath = "//*[@id=\"inventory_container\"]/div/div[1]/div[3]/button")
+    WebElement removeBackpack;
+
+    @FindBy(xpath = "//*[@id=\"inventory_container\"]/div/div[1]/div[3]/button")
+    WebElement addToCartSauceLabsBackpack;
+
+    @FindBy(className = "bm-burger-button")
+    WebElement burgerButton;
+
+    @FindBy(css = "#logout_sidebar_link")
+    WebElement logoutButton;
+
+    @FindBy(css = "#inventory_container > div > div:nth-child(1) > div.pricebar > button")
+    WebElement removeBackpackButton;
+
+    @FindBy(className = "inventory_item_name")
+    WebElement firstItemName;
+
+    public HomePage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public boolean isHomePageDisplayed() {
+        return logo.isDisplayed();
+    }
+
+    public void addItemToCart(String itemName) {
+        switch (itemName.toLowerCase()) {
+            case "sauce labs backpack":
+                addToCartSauceLabsBackpack.click();
+                break;
+            default:
+                throw new IllegalArgumentException("Item not available: " + itemName);
+        }
+    }
+    public boolean isCartNumberDisplayed() {
+        return cartNumber.isDisplayed();
+    }
+    public boolean carritoVacio() {
+        boolean carritoVacio = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("#shopping_cart_container > a > span")));
+        return carritoVacio;
+    }
+
+    public void clickOnCartIcon() {
+        shoppingCartIcon.click();
+    }
+    public void clickOnBurgerButton() {
+        burgerButton.click();
+    }
+
+    public void clickOnRemoveBackpackButton() {
+        removeBackpackButton.click();
+    }
+
+    public void clickOnLogoutButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement logoutLink = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#logout_sidebar_link")));
+        logoutLink.click();
+    }
+}
