@@ -1,0 +1,47 @@
+package stepDefinitions;
+
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
+import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.WebDriver;
+import pages.HomePage;
+import utilities.DriverManager;
+
+public class HomePageSteps {
+    WebDriver driver = Hooks.driver;
+    HomePage homePage = new HomePage(driver);
+
+    @Then("The home page should be displayed")
+    public void verifyHomePageIsDisplayed() {
+        Assertions.assertTrue(homePage.isHomePageDisplayed(), "Home page is not displayed");
+    }
+
+    @Then("El carrito permanece")
+    public void carritoPermanece() {
+        Assertions.assertTrue(homePage.isCartNumberDisplayed(), "Cart number is not displayed");
+    }
+    @And("I add {string} to the cart")
+    public void addItemToCart(String itemName) {
+        homePage.addItemToCart(itemName);
+    }
+
+    @And("I click on the cart icon")
+    public void clickOnCartIcon() {
+        homePage.clickOnCartIcon();
+    }
+    @Then("el item está en el carrito")
+    public void CarritoAparece() {
+        Assertions.assertTrue(homePage.isCartNumberDisplayed(), "Cart number is not displayed");
+    }
+
+    @And("quita un elemento del carrito")
+    public void removeBackpack() {
+        homePage.clickOnRemoveBackpackButton();
+    }
+
+    @Then("el item no está en el carrito")
+    public void CarritoNoAparece() {
+        Assertions.assertTrue(homePage.carritoVacio(), "Cart number is displayed");
+    }
+
+}
