@@ -1,0 +1,30 @@
+package stepDefinitions;
+
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
+import org.junit.jupiter.api.Assertions;
+import pages.CartPage;
+import pages.HomePage;
+import utilities.DriverManager;
+
+public class CartPageSteps {
+    CartPage cartPage = new CartPage(DriverManager.getDriver().driver);
+
+    @Then("{string} should be in the cart")
+    public void verifyItemInCart(String itemName) {
+        Assertions.assertTrue(cartPage.isItemInCart(itemName), itemName + " is not in the cart");
+    }
+
+    @And("I click on the checkout button")
+    public void clickOnCheckoutButton() {
+        cartPage.clickOnCheckoutButton();
+    }
+
+
+    @And("I remove {string} from the cart")
+    public void removeItemFromCart(String itemName) {
+        cartPage.removeItemFromCart(itemName);
+    }
+
+
+}
